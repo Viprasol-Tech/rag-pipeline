@@ -65,20 +65,21 @@ each is just a callable, so there is no framework to learn:
 ```python
 from rag_pipeline import RAGPipeline
 
-# Bring your own model. Any callable with the right shape works.
-def my_embedder(text: str) -> list[float]:
-    ...  # e.g. OpenAI / sentence-transformers embeddings
 
-def my_llm(prompt: str) -> str:
-    ...  # e.g. an OpenAI chat completion
+# Bring your own model. Any callable with the right shape works.
+def my_embedder(text: str) -> list[float]: ...  # e.g. OpenAI / sentence-transformers embeddings
+
+
+def my_llm(prompt: str) -> str: ...  # e.g. an OpenAI chat completion
+
 
 pipeline = RAGPipeline(embedder=my_embedder, llm=my_llm, top_k=3)
 pipeline.ingest("Photosynthesis lets plants turn sunlight into glucose.", source="bio")
 
 result = pipeline.answer("How do plants use sunlight?")
-print(result.answer)        # the grounded LLM answer
-print(result.contexts)      # the retrieved chunks (with scores)
-print(result.prompt)        # the exact prompt sent to the LLM
+print(result.answer)  # the grounded LLM answer
+print(result.contexts)  # the retrieved chunks (with scores)
+print(result.prompt)  # the exact prompt sent to the LLM
 ```
 
 Run it with **zero** arguments and it uses the built-in `FakeEmbedder` + `echo_llm` — no network, no keys.
